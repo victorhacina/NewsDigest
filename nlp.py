@@ -1,26 +1,33 @@
 import nltk
 nltk.download('vader_lexicon')
 nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-def sentiment():
+
+
+def sentiment(text):
     print("executing sentiment")
-    text = """Președinta Comisiei Europene, Ursula von der Leyen, anunță că va efectua 
-o vizită în Republica Moldova la mijlocul săptămânii viitoare.
- Într-o postare pe contul său de Twitter, Von der Leyen a declarat că se lucrează la un sprijin 
-suplimentar pentru Republica Moldova pentru atenuarea crizei energetice."""
+      
+    sid = SentimentIntensityAnalyzer()
+    ss = sid.polarity_scores(text)
+    return ss["compound"]
+    # for k in sorted(ss):
+    #     print('{0}: {1}, '.format(k, ss[k]), end='')
+    # print("\n")
 
-    lines = text.split(".")
-    print(lines)
-    for sentence in lines:
-        sid = SentimentIntensityAnalyzer()
-        print(sentence)
-        ss = sid.polarity_scores(sentence)
-        for k in sorted(ss):
-            print('{0}: {1}, '.format(k, ss[k]), end='')
-        print()
 
-    words: list[str] = nltk.word_tokenize(text)
-    fd = nltk.FreqDist(words)
-    print(fd.most_common(10))
-  
+    # words: list[str] = nltk.word_tokenize(text)
+    # words_tagged = nltk.pos_tag(words)
+    # words_relevant = []
+    # for (word, tag) in words_tagged:
+    #     if tag[0:2] in ["RB", "NN", "JJ", "VB"]:
+    #         #print(f"{word} {tag[0:2]}")
+    #         words_relevant.append(word)
+           
+
+    #print(words_tagged)
+    #fd = nltk.FreqDist(words_relevant)
+    #print(fd.most_common(10))
+#sentiment(txt)
+
