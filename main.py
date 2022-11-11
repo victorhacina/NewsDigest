@@ -1,7 +1,9 @@
 import threading
 from parse import parse_stiri
 from translate import translate_text
-from nlp import sentiment
+from nlp import sentiment,frequency
+import re
+
 print("executing main ")
 
 lista = parse_stiri()
@@ -27,5 +29,15 @@ for el in results:
    score = sentiment(el)
    scores.append({"sentence":el, "score":score})
 print(scores)
+
+all = ""
+for el in results:
+    all = all + el
+  
+all_filter = re.sub(r'[^a-zA-Z0-9\s]', '', all)
+
+most_common = frequency(all_filter)
+print(most_common)
+    
 
 print("finish main")
