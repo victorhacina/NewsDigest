@@ -25,5 +25,5 @@ def frequency(txt):
         if tag[0:2] in ["RB", "NN", "JJ"]: 
             words_relevant.append(word)
     fd = nltk.FreqDist(words_relevant)
-    return fd.most_common(10)
+    return fd.most_common(15)
 

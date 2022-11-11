@@ -1,12 +1,13 @@
 import threading
-from parse import parse_stiri
+from parse import parse_stiri,parse_jurnal
 from translate import translate_text
 from nlp import sentiment,frequency
 import re
 
 print("executing main ")
 
-lista = parse_stiri()
+lista = parse_stiri()+ parse_jurnal()
+
 print(lista)
 
 threads = []
