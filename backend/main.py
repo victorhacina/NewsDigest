@@ -40,5 +40,12 @@ all_filter = re.sub(r'[^a-zA-Z0-9\s]', '', all)
 most_common = frequency(all_filter)
 print(most_common)
     
+file_scores = open("scores.txt", "w", encoding = "utf-8")
+file_scores.write(str(scores))
+file_scores.close()
+
+file_words = open("words.txt","w", encoding = "utf-8")
+file_words.write(str(most_common))
+file_words.close()
 
 print("finish main")
