@@ -1,10 +1,11 @@
 import boto3
-from botocore.config import Config
+import threading
+import re
 
 client = boto3.client("translate")
 
 def translate_text(txt,lang_source,lang_target,lista):
-    print("executing translate ")
+    print(f"executing translate { threading.current_thread().native_id }")
    
     response = client.translate_text(
         Text=txt,
@@ -12,5 +13,9 @@ def translate_text(txt,lang_source,lang_target,lista):
         TargetLanguageCode=lang_target)
 
     result= response.get("TranslatedText")
-    lista.append(result)
+    result_clean= re.sub(r'[^\w\s.,]', '', result)
+    lista.append(result_clean)
     return
+
+
+

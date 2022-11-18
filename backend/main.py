@@ -23,8 +23,6 @@ for element in threads:
 
 #print(results)
 
-
-
 scores = []
 for el in results:
    score = sentiment(el)
@@ -32,20 +30,16 @@ for el in results:
 print(scores)
 
 all = ""
-for el in results:
-    all = all + el
+for el in results: all = all + el
   
-all_filter = re.sub(r'[^a-zA-Z0-9\s]', '', all)
 
-most_common = frequency(all_filter)
+most_common = frequency(all)
 print(most_common)
-    
-file_scores = open("scores.txt", "w", encoding = "utf-8")
-file_scores.write(str(scores))
-file_scores.close()
 
-file_words = open("words.txt","w", encoding = "utf-8")
-file_words.write(str(most_common))
-file_words.close()
+result = {"news": scores, "words": most_common}
+
+file_scores = open("result.txt", "w", encoding = "utf-8")
+file_scores.write(str(result))
+file_scores.close()
 
 print("finish main")
