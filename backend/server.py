@@ -40,6 +40,7 @@ while(True):
         conn.send(b'HTTP/1.1 200 OK \n')
         conn.send(f'Content-Length: { file_scores_stats.st_size } \n'.encode())
         conn.send(b'Content-Type: text/json; encoding=utf8 \n')
+        conn.send(b'Access-Control-Allow-Origin: * \n')
         conn.send(b'Connection: close \n')
         conn.send(b'\n')
         conn.sendfile(file_scores)
