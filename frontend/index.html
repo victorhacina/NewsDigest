@@ -3,6 +3,7 @@
 
 <head>
     <title>News Digest vers 1</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -10,14 +11,21 @@
     <h1>prima mea fila</h1>
     <p>primul meu paragraf</p>
 
-    <div>tot primu </div>
-
-<script>
-fetch('http://http2demo.io',{mode:'no-cors'}).then((response) => response.json()).then((data) => console.log(data));
+    <div id="mycontent">My first </div>
 
 
+    <script>
+        
+        getText('http://ec2-3-73-144-243.eu-central-1.compute.amazonaws.com:8080/')
 
-</script>
+    async function getText(site) {
+        const response = await fetch( site)
+        const text = await response.text();
+        document.getElementById("mycontent").innerHTML = text;
+    }  
+
+
+    </script>
 </body>
 
 </html>
