@@ -1,1 +1,38 @@
-h1 {color:red}
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #1e1e1ee3;
+    margin-left: 25px;
+    margin-right: 25px
+}
+
+.header {
+    display: flex;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    align-items: center;
+    column-gap: 20px;
+}
+
+
+.overall-score{
+    font-size: 64px;
+    font-weight: 600;
+}
+
+.hot-news {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.best-news {
+    color: green;
+}
+
+.worst-news {
+    color: red;
+}
+
+.footer{
+    margin-top: 200px;
+}

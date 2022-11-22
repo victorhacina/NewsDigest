@@ -2,7 +2,7 @@ import threading
 from parse import parse_stiri,parse_jurnal
 from translate import translate_text
 from nlp import sentiment,frequency
-import re
+import json
 
 print("executing main ")
 
@@ -39,7 +39,7 @@ print(most_common)
 result = {"news": scores, "words": most_common}
 
 file_scores = open("result.txt", "w", encoding = "utf-8")
-file_scores.write(str(result))
+file_scores.write(json.dumps(result))
 file_scores.close()
 
 print("finish main")

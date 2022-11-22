@@ -1,17 +1,32 @@
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>News Digest vers 1</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-    <h1>prima mea fila</h1>
-    <p>primul meu paragraf</p>
+    <h1>Latest Digest</h1>
+   
 
-    <div id="mycontent">My first </div>
+    <div class="header">
+        <div class="overall-score"></div>
+        <div class="hot-news">
+            <div class="best-news"></div>
+            <div class="worst-news"></div>
+        </div>
+    </div>
+
+    <h2>Most frequent words</h2>
+    <div class="all-words"></div>
+
+    <p class="footer">Refreshing every 6 hours. Currently covers stiri.md and jurnal.md</p>
 
 
     <script>
@@ -19,9 +34,39 @@
         getText('http://ec2-3-73-144-243.eu-central-1.compute.amazonaws.com:8080/')
 
     async function getText(site) {
-        const response = await fetch( site)
+        const response = await fetch( site )
         const text = await response.text();
-        document.getElementById("mycontent").innerHTML = text;
+        //document.getElementById("mycontent").innerHTML = text;
+        const lista = JSON.parse( text )
+        
+        let averageScore = 0;
+        lista.news.forEach(element => {
+            averageScore = averageScore + element.score;
+        });
+        averageScore = averageScore / lista.news.length
+        console.log("Overall score is ", averageScore)
+
+        document.querySelector(".overall-score").innerHTML = averageScore.toFixed(2);
+
+        let bestNews = lista.news[0];
+        lista.news.forEach(element => {
+           if(element.score >= bestNews.score) bestNews  = element
+        });
+
+        document.querySelector(".best-news").innerHTML = bestNews.sentence;
+
+        let worstNews = lista.news[0];
+        lista.news.forEach(element => {
+           if(element.score <= worstNews.score) worstNews  = element
+        });
+
+        document.querySelector(".worst-news").innerHTML = worstNews.sentence;
+
+        console.log("best news", bestNews)
+        console.log("worst news", worstNews)
+
+        document.querySelector(".all-words").innerHTML = lista.words
+
     }  
 
 
