@@ -4,7 +4,7 @@ import os
 INTERFACE = "0.0.0.0"
 PORT = 8080
 
-FNAME = "result.txt"
+FNAME = "/home/myuser/NewsDigest/backend/result.txt"
 
 
  # A TCP based echo server
@@ -25,28 +25,50 @@ print(f"{ INTERFACE } : { PORT } \n\n\n ")
 while(True):
     # Start accepting client connections
         (conn, address) = echoSocket.accept()
+        conn.settimeout(2)
 
-        data = conn.recv(1024).decode()
-        if not data: break
+        try:
 
-        print(f"Connection from {address} \n")
-        print(data)
+            data = conn.recv(1024).decode()
+            if not data: continue
 
-        file_scores = open(FNAME, "rb")
-        file_scores_stats = os.stat(FNAME)
-    
+            print(f"Connection from {address} \n")
+            print(f'{data} \r\n')
 
-    
-        conn.send(b'HTTP/1.1 200 OK \n')
-        conn.send(f'Content-Length: { file_scores_stats.st_size } \n'.encode())
-        conn.send(b'Content-Type: text/json; encoding=utf8 \n')
-        conn.send(b'Access-Control-Allow-Origin: * \n')
-        conn.send(b'Connection: close \n')
-        conn.send(b'\n')
-        conn.sendfile(file_scores)
+
+            http_method = data.splitlines()[0].split(" ")[0]
+            http_location = data.splitlines()[0].split(" ")[1]
+
+            if http_method != "GET" or http_location != "/" : 
+                conn.send(b'HTTP/1.1 404 \r\n')
+                conn.send(b'Connection: close \r\n')
+                conn.close
+                continue
+
+
+
+
+
+            file_scores_stats = os.stat(FNAME)
         
+            conn.send(b'HTTP/1.1 200 OK \r\n')
+            conn.send(f'Content-Length: { file_scores_stats.st_size } \r\n'.encode())
+            conn.send(b'Content-Type: text/json; encoding=utf8 \r\n')
+            conn.send(b'Access-Control-Allow-Origin: * \r\n')
+            conn.send(b'Connection: keep-alive \r\n')
+            conn.send(b'\r\n')
 
-        file_scores.close()
-        conn.close
+            with open(FNAME, "rb") as f:
+                conn.sendfile(f)
+            conn.send(b'\r\n')
+            conn.close
+
+        except socket.timeout as e:
+            print(f"Timeout: {e}")
+            continue
+
+        except Exception as e:
+            print(f"Exception: {e}")
+            continue
         
 echoSocket.close()
