@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -8,30 +7,37 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body>
 
-    <h1>Latest Digest</h1>
-   
+
+
 
     <div class="header">
-        <div class="overall-score"></div>
+        <div class="overall-score">
+            <img class="smile" src="./imgs/0.gif" alt="overall score" width="200" >
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="victorhacina" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+
+        </div>
         <div class="hot-news">
             <div class="best-news"></div>
             <div class="worst-news"></div>
         </div>
     </div>
 
-    <h2>Most frequent words</h2>
-    <div class="all-words"></div>
+    
+   
+    <div class="myChart"></div>
 
-    <p class="footer">Refreshing every 6 hours. Currently covers stiri.md and jurnal.md</p>
+    <p>This website shows the mood of Victor Hacina as he reads the Moldavian trash news throughout the day.</p>
+    <p class="footer">Refreshing every 3 hours. Currently covers stiri.md and jurnal.md </p>
 
 
     <script>
         
-        getText('http://ec2-3-73-144-243.eu-central-1.compute.amazonaws.com:8080/')
+        getText('https://ec2-3-73-144-243.eu-central-1.compute.amazonaws.com/')
 
     async function getText(site) {
         const response = await fetch( site )
@@ -46,31 +52,76 @@
         averageScore = averageScore / lista.news.length
         console.log("Overall score is ", averageScore)
 
-        document.querySelector(".overall-score").innerHTML = averageScore.toFixed(2);
+        //document.querySelector(".overall-score").innerHTML = averageScore.toFixed(2);
+        let sentiment = averageScore.toFixed(2)
+        let smile = document.querySelector(".smile")
+        smile.alt = sentiment
+        
+        if( sentiment >= -0.25 && sentiment <= 0.25 ) { 
+                smile.src = "./imgs/0.gif" 
+        } else if(sentiment >= -0.75 && sentiment <= -0.25) {
+            smile.src = "./imgs/m05.gif"
+        } else if(sentiment >= -1 && sentiment <= -0.75) {
+            smile.src = "./imgs/m1.gif"
+        } else if( sentiment >= 0.25 && sentiment <= 0.75 ) {
+            smile.src = "./imgs/05.gif"
+        } else if(sentiment >= 0.75 && sentiment <= 1) {
+            smile.src = "./imgs/1.gif"
+        }
 
         let bestNews = lista.news[0];
         lista.news.forEach(element => {
            if(element.score >= bestNews.score) bestNews  = element
         });
 
-        document.querySelector(".best-news").innerHTML = bestNews.sentence;
+        document.querySelector(".best-news").innerHTML = `<b>Best news</b>: ${bestNews.sentence} - Scor ${bestNews.score} `;
 
         let worstNews = lista.news[0];
         lista.news.forEach(element => {
            if(element.score <= worstNews.score) worstNews  = element
         });
 
-        document.querySelector(".worst-news").innerHTML = worstNews.sentence;
+        document.querySelector(".worst-news").innerHTML = `<b>Worst news</b>: ${worstNews.sentence} - Scor ${worstNews.score}`;
 
         console.log("best news", bestNews)
         console.log("worst news", worstNews)
 
-        document.querySelector(".all-words").innerHTML = lista.words
+        //document.querySelector(".all-words").innerHTML = lista.words
+
+
+
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart(words) {
+        // Define the chart to be drawn.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Element');
+        data.addColumn('number', 'Frecventa');
+        data.addRows( lista.words );
+
+        // Instantiate and draw the chart.
+        var chart = new google.visualization.BarChart(document.querySelector('.myChart'));
+        var options = {
+                     'width':800,
+                     'height':500,
+                     'legend':'none',
+                     colors:['#7FB69A'],
+                     vAxis: {textPosition: 'out'}
+                    };
+        chart.draw(data, options);
+        }
+
 
     }  
 
 
+
     </script>
+
+
+
+
 </body>
 
 </html>

@@ -7,10 +7,10 @@ body {
 
 .header {
     display: flex;
-    margin-top: 100px;
-    margin-bottom: 100px;
+    margin-top: 50px;
+    margin-bottom: 20px;
     align-items: center;
-    column-gap: 20px;
+    column-gap: 50px;
 }
 
 
@@ -26,13 +26,12 @@ body {
 }
 
 .best-news {
-    color: green;
+  
 }
 
 .worst-news {
-    color: red;
+    
 }
 
 .footer{
-    margin-top: 200px;
 }
