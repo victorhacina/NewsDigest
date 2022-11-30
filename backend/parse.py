@@ -15,7 +15,7 @@ def parse_stiri():
       brief = article.find("p")
       if not titlu is None and not brief is None: list.append({'titlu':titlu.text, 'brief':brief.text})
         
-    return list
+    return list[0:15]
     
 def parse_jurnal():
     print("executing parse")
@@ -31,7 +31,7 @@ def parse_jurnal():
       brief = article.find("p")
       if not titlu is None and not brief is None: list.append({'titlu':titlu.text, 'brief':brief.text})
         
-    return list
+    return list[0:15]
 
 
 def parse_publica():
