@@ -1,12 +1,13 @@
 import threading
-from parse import parse_stiri,parse_jurnal
+from parse import parse_stiri,parse_jurnal,parse_publica
 from translate import translate_text
 from nlp import sentiment,frequency
 import json
 
+
 print("executing main ")
 
-lista = parse_stiri()+ parse_jurnal()
+lista = parse_stiri()+ parse_jurnal()+ parse_publica()
 
 print(lista)
 

@@ -34,6 +34,21 @@ def parse_jurnal():
     return list
 
 
+def parse_publica():
+    print("executing parse")
+    URL = "https://www.publika.md/toate-stirile"
+    page = requests.get(URL)
 
-print (parse_jurnal())
+    soup = BeautifulSoup(page.content,"html.parser")
+    stiri = soup.find_all("h3", class_="entry-title")
+    
+    list = []
+    for article in stiri:
+      list.append({'titlu':"publika", 'brief':article.text})
+
+
+    return list[0:15]
+
+
+print(parse_publica())
 
