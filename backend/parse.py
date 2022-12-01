@@ -1,5 +1,7 @@
 import requests 
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
 
 def parse_stiri():
     print("executing parse")
@@ -50,5 +52,50 @@ def parse_publica():
     return list[0:15]
 
 
-print(parse_publica())
+def parse_realitatea():
+
+    print("executing parse")
+    URL = "https://realitatea.md/toate-stirile/"
+    page = requests.get(URL)
+
+    soup = BeautifulSoup(page.content,"html.parser")
+    stiri = soup.find_all("div", class_="article-header")
+    
+    list = []
+    for article in stiri:
+      list.append({'titlu':"realitatea", 'brief':article.text})
+
+
+    return list[0:15]
+
+def parse_tv8():
+
+
+    print("executing parse")
+    URL = "https://tv8.md/"
+    #page = requests.get(URL)
+    
+    opts = webdriver.ChromeOptions()
+    opts.add_argument("--headless")
+
+    browser = webdriver.Chrome(chrome_options=opts, executable_path="chromedriver")
+    browser.get(URL)
+    WebDriverWait(browser, 5)
+    html = browser.page_source
+
+   # print(html)
+
+
+    browser.quit()
+
+    soup = BeautifulSoup(html,"html.parser")
+    stiri = soup.find("div", attrs={"role" : "tabpanel"})
+    titluri = stiri.find_all("h5")
+    
+    list = []
+    for article in titluri:
+      list.append({'titlu':"tv8", 'brief':article.text})
+
+
+    return list[0:15]
 
