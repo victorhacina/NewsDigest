@@ -1,5 +1,5 @@
 import threading
-from parse import parse_stiri,parse_jurnal,parse_publica,parse_realitatea,parse_tv8
+from parse import parse_stiri,parse_jurnal,parse_publica,parse_realitatea,parse_tv8,parse_pointmd,parse_protv
 from translate import translate_text
 from nlp import sentiment,frequency
 import json
@@ -7,7 +7,7 @@ import json
 
 print("executing main ")
 
-lista = parse_stiri()+ parse_jurnal()+ parse_publica()+ parse_tv8()+ parse_realitatea()
+lista = parse_stiri()+ parse_jurnal()+ parse_publica()+ parse_tv8()+ parse_realitatea()+ parse_pointmd()+ parse_protv()
 
 print(lista)
 
@@ -15,7 +15,10 @@ threads = []
 results = []
 
 for el in lista:
-    thread = threading.Thread(target=translate_text, args=(el['brief'], "ro", "en", results))
+    if(el["titlu"] in ["pointmd"] ): 
+        thread = threading.Thread(target=translate_text, args=(el['brief'], "ru", "en", results))
+    else:
+        thread = threading.Thread(target=translate_text, args=(el['brief'], "ro", "en", results))
     threads.append(thread)
     thread.start()
 

@@ -99,3 +99,54 @@ def parse_tv8():
 
     return list[0:15]
 
+def parse_pointmd():
+
+
+    print("executing parse")
+    URL = "https://old.point.md/ru/novosti/"
+    
+    opts = webdriver.ChromeOptions()
+    opts.add_argument("--headless")
+
+    browser = webdriver.Chrome(chrome_options=opts, executable_path="chromedriver")
+    browser.get(URL)
+    WebDriverWait(browser, 5)
+    html = browser.page_source
+
+    browser.quit()
+
+    soup = BeautifulSoup(html,"html.parser")
+    stiri = soup.find_all("article")
+    
+    list = []
+    for article in stiri:
+      titlu = article.find("p")
+      list.append({'titlu':"pointmd", 'brief':titlu.text})
+
+    return list[0:9]
+
+def parse_protv():
+
+
+    print("executing parse")
+    URL = "https://protv.md/ultimele-%C8%99tiri"
+    
+    opts = webdriver.ChromeOptions()
+    opts.add_argument("--headless")
+
+    browser = webdriver.Chrome(chrome_options=opts, executable_path="chromedriver")
+    browser.get(URL)
+    WebDriverWait(browser, 5)
+    html = browser.page_source
+
+    browser.quit()
+
+    soup = BeautifulSoup(html,"html.parser")
+    stiri = soup.find_all("div", class_="description")
+    
+    list = []
+    for article in stiri:
+      titlu = article.find("span")
+    list.append({'titlu':"protv", 'brief':titlu.text})
+
+    return list[0:15]
